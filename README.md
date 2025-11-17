@@ -1,1 +1,3 @@
-# CSED451-Computer-Graphics
+# CSED451-Computer-Graphics Term Project
+---
+## vaivai - the VR maimai emulation from the scratch
