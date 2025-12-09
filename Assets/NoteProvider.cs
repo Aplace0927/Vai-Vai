@@ -4,24 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Note;
 
-public enum NoteType
-{
-    TAP = 0,
-    HOLD = 1,
-    SLIDE = 2
-}
-
-public class Note
-{
-    public NoteType type;
-    public GameObject targetObject;
-    public double tapTime;
-    public double endTime;
-    public bool[] judgementArray;
-    public bool isAdjusted;
-    public bool isBreakNote;
-    public GameObject[] slideNotes;
-}
 
 public class NoteProvider : MonoBehaviour
 {
@@ -83,19 +65,6 @@ public class NoteProvider : MonoBehaviour
         noteList.Add(note);
 }
 
-    public class Note
-    {
-        public NoteType type;
-        public GameObject targetObject;
-        public double tapTime;
-        public double endTime;
-        public List<bool> judgementArray;
-        public bool isAdjusted;
-        public bool isBreakNote;
-        public List<GameObject> slideNotes;
-    }
-
-
     void Update()
     {
         double currentTime = Time.time;
@@ -120,7 +89,7 @@ public class NoteProvider : MonoBehaviour
 
     void SpawnNote(Note noteData)
     {
-        GameObject noteObject;
+        GameObject noteObject ;
         if (noteData.isBreakNote)
         {
             switch (noteData.type)
@@ -134,6 +103,10 @@ public class NoteProvider : MonoBehaviour
                 case NoteType.SLIDE:
                     noteObject = Instantiate(starBreakPrefabs, spawnPoint.position, Quaternion.identity);
                     break;
+                default:
+                    noteObject = Instantiate(tapBreakPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+
             }
         }
         else
@@ -149,9 +122,16 @@ public class NoteProvider : MonoBehaviour
                 case NoteType.SLIDE:
                     noteObject = Instantiate(starPrefabs, spawnPoint.position, Quaternion.identity);
                     break;
+                default:
+                    noteObject = Instantiate(tapBreakPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
             }
         }
-        
+        Note myNote = noteObject.AddComponent<Note>();
+        myNote.initVariables(NoteType.TAP, noteData.targetObject, noteData.tapTime, noteData.endTime, noteData.judgementArray,
+            noteData.isAdjusted, noteData.isBreakNote, noteData.slideNotes);
+
+
         if (noteData.type == NoteType.SLIDE)
         {
             foreach (var vertex in noteData.slideNotes)
