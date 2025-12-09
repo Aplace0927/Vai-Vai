@@ -25,8 +25,9 @@ public class Note
 
 public class NoteProvider : MonoBehaviour
 {
+    public GameObject TestGameObject;
+
     [Header("Settings")]
-    public GameObject notePrefab;
     public Transform spawnPoint;
 
     [Header("Note Targets")]
@@ -34,14 +35,14 @@ public class NoteProvider : MonoBehaviour
     [SerializeField] GameObject[] bNoteTargets;
     [SerializeField] GameObject cNoteTargets;
 
-    [Header("Note Sprites")]
-    [SerializeField] Sprite tapSprite;
-    [SerializeField] Sprite holdSprite;
-    [SerializeField] Sprite starSprite;
-    [SerializeField] Sprite slideSprite;
-    [SerializeField] Sprite tapBreakSprite;
-    [SerializeField] Sprite holdBreakSprite;
-    [SerializeField] Sprite starBreakSprite;
+    [Header("Note Prefabs")]
+    [SerializeField] GameObject tapPrefabs;
+    [SerializeField] GameObject holdPrefabs;
+    [SerializeField] GameObject starPrefabs;
+    [SerializeField] GameObject slidePrefabs;
+    [SerializeField] GameObject tapBreakPrefabs;
+    [SerializeField] GameObject holdBreakPrefabs;
+    [SerializeField] GameObject starBreakPrefabs;
 
     [Header("Note Material")]
     [SerializeField] Material PinkMaterial;
@@ -64,18 +65,36 @@ public class NoteProvider : MonoBehaviour
     // t1 - 10fps = 노트가 움직이기 시작함
     // t1 = 노트가 사라짐
 
-    NoteType type;
-    GameObject noteTargetObject;
-    double noteTapTime;
-    double noteEndTime;
-    bool[] noteJudgementArray;
-    bool isnoteAdjusted;
-    bool isnoteBreakNote;
-
     private void Start()
     {
+        nextNoteIndex = 0;
         noteList.Clear();
+
+        Note note = new Note();
+        note.type = NoteType.TAP;
+        note.targetObject = TestGameObject;
+        note.tapTime = 5.0f;
+        note.endTime = 0;
+        note.judgementArray = new List<bool>();
+        note.isAdjusted = false;
+        note.isBreakNote = false;
+        note.slideNotes = null;
+
+        noteList.Add(note);
+}
+
+    public class Note
+    {
+        public NoteType type;
+        public GameObject targetObject;
+        public double tapTime;
+        public double endTime;
+        public List<bool> judgementArray;
+        public bool isAdjusted;
+        public bool isBreakNote;
+        public List<GameObject> slideNotes;
     }
+
 
     void Update()
     {
@@ -101,61 +120,43 @@ public class NoteProvider : MonoBehaviour
 
     void SpawnNote(Note noteData)
     {
-        GameObject noteObject = Instantiate(notePrefab, spawnPoint.position, Quaternion.identity);
-        
-        // NoteController controller = noteObject.GetComponent<NoteController>();
-        // if (controller != null)
+        GameObject noteObject;
+        if (noteData.isBreakNote)
         {
-            // TODO: 생성된 Object의 움직임을 기술하는 스크립트 추가
+            switch (noteData.type)
+            {
+                case NoteType.TAP:
+                    noteObject = Instantiate(tapBreakPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+                case NoteType.HOLD:
+                    noteObject = Instantiate(holdBreakPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+                case NoteType.SLIDE:
+                    noteObject = Instantiate(starBreakPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+            }
         }
-
-        VisualizeNoteType(noteObject, noteData);
-
+        else
+        {
+            switch (noteData.type)
+            {
+                case NoteType.TAP:
+                    noteObject = Instantiate(tapPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+                case NoteType.HOLD:
+                    noteObject = Instantiate(holdPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+                case NoteType.SLIDE:
+                    noteObject = Instantiate(starPrefabs, spawnPoint.position, Quaternion.identity);
+                    break;
+            }
+        }
+        
         if (noteData.type == NoteType.SLIDE)
         {
             foreach (var vertex in noteData.slideNotes)
             {
                 // TODO: vertex에 따라 슬라이드 object 만들기
-            }
-        }
-
-    void VisualizeNoteType(GameObject noteObject, Note noteData)
-        {
-            var spriteRenderer = noteObject.GetComponent<SpriteRenderer>();
-
-            if (noteData.isBreakNote)
-            {
-                spriteRenderer.material = OrangeMaterial;
-                switch (noteData.type)
-                {
-                    case NoteType.TAP:
-                        spriteRenderer.sprite = tapBreakSprite;
-                        break;
-                    case NoteType.HOLD:
-                        spriteRenderer.sprite = holdBreakSprite;
-                        break;
-                    case NoteType.SLIDE:
-                        spriteRenderer.sprite = starBreakSprite;
-                        break;
-                }
-            }
-            else
-            {
-                switch (noteData.type)
-                {
-                    case NoteType.TAP:
-                        spriteRenderer.sprite = tapSprite;
-                        spriteRenderer.material = PinkMaterial;
-                        break;
-                    case NoteType.HOLD:
-                        spriteRenderer.sprite = holdSprite;
-                        spriteRenderer.material = PinkMaterial;
-                        break;
-                    case NoteType.SLIDE:
-                        spriteRenderer.sprite = starSprite;
-                        spriteRenderer.material = BlueMaterial;
-                        break;
-                }
             }
         }
     }
