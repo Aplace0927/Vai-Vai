@@ -33,8 +33,8 @@ public class NoteProvider : MonoBehaviour
     [SerializeField] Material BlueMaterial;
     // 보정 없음
 
-    public double visibleOffsetTime = 0.33f; // t1 - 20fps
-    public double moveOffsetTime = 0.16f;    // t1 - 10fps
+    public double visibleOffsetTime = 10.33f; // t1 - 20fps
+    public double moveOffsetTime = 5.16f;    // t1 - 10fps
 
     List<Note> noteList = new List<Note>();
 
@@ -53,10 +53,10 @@ public class NoteProvider : MonoBehaviour
         noteList.Clear();
 
         Note note = new Note();
-        note.type = NoteType.TAP;
+        note.type = NoteType.HOLD;
         note.targetObject = TestGameObject;
-        note.tapTime = 5.0f;
-        note.endTime = 0;
+        note.tapTime = 3.0f;
+        note.endTime = 6.0f;
         note.judgementArray = new List<bool>();
         note.isAdjusted = false;
         note.isBreakNote = false;
