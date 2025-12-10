@@ -52,8 +52,10 @@ public class JudgementManager : MonoBehaviour
                 {
                     if (((note.tapTime - free_time) <= clue.lastExitSelectTime) &((note.tapTime + free_time) >= clue.lastExitSelectTime))
                     {
+                        if (!note.judgementArray[0]){
                         note.judgementArray[0] = true;
                         ScoreManager.Instance.AddScore(tap_note_score*score_scale);
+                        }
                     }
                 }
             }
@@ -80,8 +82,10 @@ public class JudgementManager : MonoBehaviour
                 {
                     if (((note.endTime - free_time) <= clue.lastExitSelectTime) &((note.endTime + free_time) >= clue.lastExitSelectTime))
                     {
+                        if (!note.judgementArray[0]){
                         note.judgementArray[0] = true;
                         ScoreManager.Instance.AddScore(hold_note_score*score_scale);
+                        }
                     }
                 }
             }
@@ -123,8 +127,10 @@ public class JudgementManager : MonoBehaviour
                 {
                     if (note.judgementArray[note.slideNotes.Count - 2])
                     {
+                        if (!note.judgementArray[note.slideNotes.Count - 1]){
                         note.judgementArray[note.slideNotes.Count - 1] = true;
                         ScoreManager.Instance.AddScore(slide_note_score*score_scale);
+                        }
                     }
                 }
             }
