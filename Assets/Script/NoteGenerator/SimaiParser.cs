@@ -243,6 +243,7 @@ namespace SimaiParser
                         _ = TryParse(ConsumeLocation, (token) =>
                             {
                                 noteLocation = NotesCollection.OuterRingNotes(token);
+                                slideTuples.Clear();
                                 slideTuples.Add(noteLocation);
                                 isBreakNote = false;
                                 isAdjusted = true;
@@ -304,7 +305,7 @@ namespace SimaiParser
                         {
                             // Considering slide destination, check every outer ring note
                             slideTuples.AddRange(NotesCollection.InterpolateSlides(
-                                noteLocation,
+                                slideTuples.Last(),
                                 NotesCollection.OuterRingNotes(token),
                                 slideDirection
                             ));
@@ -333,28 +334,26 @@ namespace SimaiParser
                         _ = TryParse(ConsumeStarFlag, (token) =>
                             {
                                 noteList.Add(new Note(NoteType.SLIDE,
-                                    slideTuples.First<NoteLocation>(),
+                                    noteLocation,
                                     currentTimeStamp,
                                     currentTimeStamp + unitMeasure * slideDurations.Sum(),
                                     isAdjusted,
                                     isBreakNote,
-                                    slideTuples
+                                    new List<NoteLocation>(slideTuples)
                                 ));
-                                noteLocation = slideTuples.Last<NoteLocation>();
                                 slideTuples.Clear();
                                 slideTuples.Add(noteLocation);
-                                currentTimeStamp += unitMeasure * slideDurations.Sum();
                                 slideDurations.Clear();
                             }, __ParseState.LOCATION_PARSED) ||
                             TryParse(ConsumeEOF, (token) =>
                             {
                                 noteList.Add(new Note(NoteType.SLIDE,
-                                    slideTuples.First<NoteLocation>(),
+                                    slideTuples.First(),
                                     currentTimeStamp,
                                     currentTimeStamp + unitMeasure * slideDurations.Sum(),
                                     isAdjusted,
                                     isBreakNote,
-                                    slideTuples
+                                    new List<NoteLocation>(slideTuples)
                                 ));
                             }, __ParseState.FINI) ||
                             TryParse(ConsumeSlideType, (token) =>
@@ -445,6 +444,22 @@ namespace SimaiParser
                 System.Console.WriteLine($"Difficulty {(MusicData.Difficulty)i}: Level {MusicData.LevelInfo[i]?.LevelString ?? "N/A"} - Notes Count: {MusicData.LevelInfo[i]?.NoteString.Count ?? -1}");
             }
         }
+        public void PrintNoteData(MusicData.Difficulty difficulty)
+        {
+            int diffi = (int)difficulty;
+            LevelData? levelData = MusicData.LevelInfo[diffi];
+            if (levelData == null)
+            {
+                System.Console.WriteLine($"No data for Difficulty: {difficulty}");
+                return;
+            }
+            System.Console.WriteLine($"Notes for Difficulty: {difficulty}");
+            foreach (Note note in levelData.NoteString)
+            {
+                System.Console.WriteLine(note.ToString());
+            }
+        }
+
         private string? GetFieldString(string fieldName)
         {
             int startIndex = fileText.IndexOf(fieldName);
