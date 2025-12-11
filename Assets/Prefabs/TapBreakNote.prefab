@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2557994106788401876}
   - component: {fileID: 2557994106788401867}
-  - component: {fileID: 2254842238279196683}
+  - component: {fileID: 449950308415930455}
   m_Layer: 0
   m_Name: TapBreakNote
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2254842238279196683
+--- !u!114 &449950308415930455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,8 +94,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2557994106788401866}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5832709e08588c04087462d66cfb5700, type: 3}
+  m_Script: {fileID: 11500000, guid: cada4744f1ee945429a089eb860dac30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteObject: {fileID: 2557994106788401866}
-  noteinfomation: {fileID: 0}

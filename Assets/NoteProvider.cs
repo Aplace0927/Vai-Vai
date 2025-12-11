@@ -29,9 +29,9 @@ public class NoteProvider : MonoBehaviour
     [Header("Note Material")]
     [SerializeField] Material PinkMaterial;
     [SerializeField] Material OrangeMaterial;
-    // [SerializeField] Material YellowMaterial; // µ¿Å¸ ±¸ÇöÀº ÇÏÁö ¾Ê½À´Ï´Ù!
+    // [SerializeField] Material YellowMaterial; // ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½!
     [SerializeField] Material BlueMaterial;
-    // º¸Á¤ ¾øÀ½
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     public double visibleOffsetTime = 10.33f; // t1 - 20fps
     public double moveOffsetTime = 5.16f;    // t1 - 10fps
@@ -43,9 +43,9 @@ public class NoteProvider : MonoBehaviour
     // parsed array
     // [A1, t1, [(bool)], bool, bool]
 
-    // t1 - 20fps = ³ëÆ®°¡ º¸ÀÌ±â ½ÃÀÛÇÔ
-    // t1 - 10fps = ³ëÆ®°¡ ¿òÁ÷ÀÌ±â ½ÃÀÛÇÔ
-    // t1 = ³ëÆ®°¡ »ç¶óÁü
+    // t1 - 20fps = ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // t1 - 10fps = ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // t1 = ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private void Start()
     {
@@ -63,6 +63,7 @@ public class NoteProvider : MonoBehaviour
         note.slideNotes = null;
 
         noteList.Add(note);
+        note.judgementArray.Add(TestGameObject);
 }
 
     void Update()
@@ -136,7 +137,7 @@ public class NoteProvider : MonoBehaviour
         {
             foreach (var vertex in noteData.slideNotes)
             {
-                // TODO: vertex¿¡ µû¶ó ½½¶óÀÌµå object ¸¸µé±â
+                // TODO: vertexï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ object ï¿½ï¿½ï¿½ï¿½ï¿½
             }
         }
     }

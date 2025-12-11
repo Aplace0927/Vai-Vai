@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1455284908501563087}
   - component: {fileID: 1455284908501563088}
-  - component: {fileID: 7291680208739564373}
+  - component: {fileID: -7657917327206034597}
   m_Layer: 0
   m_Name: SlideNote
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7291680208739564373
+--- !u!114 &-7657917327206034597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,8 +94,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1455284908501563089}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5832709e08588c04087462d66cfb5700, type: 3}
+  m_Script: {fileID: 11500000, guid: cada4744f1ee945429a089eb860dac30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  noteObject: {fileID: 1455284908501563089}
-  noteinfomation: {fileID: 0}
