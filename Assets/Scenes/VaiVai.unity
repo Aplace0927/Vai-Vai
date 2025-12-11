@@ -172,11 +172,11 @@ MonoBehaviour:
   - {fileID: 106944240}
   - {fileID: 1748937628}
   cNoteTargets: {fileID: 336770510576845027}
-  tapPrefabs: {fileID: 2557994106788401866, guid: 22946812553c4b54b8420fd81b40cca1, type: 3}
+  tapPrefabs: {fileID: 1455284908501563089, guid: 0df783e4eaba69e4e88f29662ae05aa4, type: 3}
   holdPrefabs: {fileID: 1455284908501563089, guid: 6b8645e44ca15244dabe2dfeee83eaf7, type: 3}
   starPrefabs: {fileID: 1455284908501563089, guid: 60cd1ef5a0de7f34b827bdf65f4d268b, type: 3}
   slidePrefabs: {fileID: 1455284908501563089, guid: 359a93e698faca44fbc800a0b0dc0fc4, type: 3}
-  tapBreakPrefabs: {fileID: 1455284908501563089, guid: 0df783e4eaba69e4e88f29662ae05aa4, type: 3}
+  tapBreakPrefabs: {fileID: 2557994106788401866, guid: 22946812553c4b54b8420fd81b40cca1, type: 3}
   holdBreakPrefabs: {fileID: 2557994106788401866, guid: d49b9f0d88f60604a92db7e9119dffae, type: 3}
   starBreakPrefabs: {fileID: 2557994106788401866, guid: 71a31d85a1f63f442b17ec155b216b49, type: 3}
   PinkMaterial: {fileID: 2100000, guid: bb7c4aeacdd62ee4988924b3ba3412ef, type: 2}
