@@ -14,7 +14,7 @@ public enum NoteLocation
 public enum NoteType { TAP, HOLD, SLIDE };
 public enum SlideDirection { STRAIGHT, CCW, CW, SHORTEST }
 
-public class Note: MonoBehaviour
+public class Note : MonoBehaviour
 {
     public Note(
         NoteType noteType,
@@ -33,6 +33,7 @@ public class Note: MonoBehaviour
         this.isAdjusted = isAdjusted;
         this.isBreakNote = isBreakNote;
         this.slideList = slideList ?? new List<NoteLocation>();
+        this.judgementArray = new List<bool>(this.slideList.Count > 0 ? this.slideList.Count : 1);
     }
     public NoteLocation noteLocation { get; set; }
     public NoteType noteType { get; set; }
@@ -42,10 +43,18 @@ public class Note: MonoBehaviour
     public bool isBreakNote { get; set; }
     public List<NoteLocation> slideList { get; set; }
 
-    // added TODO: @Aplace
     public List<bool> judgementArray { get; set; }
-    public GameObject targetObject { get; set; }
+    public GameObject targetObject()
+    {
+        return NotesCollection.BindLocation(this.noteLocation);
+    }
 
+    public List<GameObject> targetSlideList()
+    {
+        return this.slideList.ConvertAll(
+            (loc) => NotesCollection.BindLocation(loc)
+        );
+    }
 
 }
 public abstract class NotesCollection
@@ -79,6 +88,30 @@ public abstract class NotesCollection
             "8" => NoteLocation.B8,
             _ => throw new ArgumentException("Invalid inner ring note character"),
         };
+    }
+    public static GameObject BindLocation(NoteLocation location)
+    {
+        return obj switch
+        {
+            NoteLocation.A1 => NoteProvider.Instance.aNoteTargets[0],
+            NoteLocation.A2 => NoteProvider.Instance.aNoteTargets[1],
+            NoteLocation.A3 => NoteProvider.Instance.aNoteTargets[2],
+            NoteLocation.A4 => NoteProvider.Instance.aNoteTargets[3],
+            NoteLocation.A5 => NoteProvider.Instance.aNoteTargets[4],
+            NoteLocation.A6 => NoteProvider.Instance.aNoteTargets[5],
+            NoteLocation.A7 => NoteProvider.Instance.aNoteTargets[6],
+            NoteLocation.A8 => NoteProvider.Instance.aNoteTargets[7],
+            NoteLocation.B1 => NoteProvider.Instance.bNoteTargets[0],
+            NoteLocation.B2 => NoteProvider.Instance.bNoteTargets[1],
+            NoteLocation.B3 => NoteProvider.Instance.bNoteTargets[2],
+            NoteLocation.B4 => NoteProvider.Instance.bNoteTargets[3],
+            NoteLocation.B5 => NoteProvider.Instance.bNoteTargets[4],
+            NoteLocation.B6 => NoteProvider.Instance.bNoteTargets[5],
+            NoteLocation.B7 => NoteProvider.Instance.bNoteTargets[6],
+            NoteLocation.B8 => NoteProvider.Instance.bNoteTargets[7],
+            NoteLocation.C => NoteProvider.Instance.cNoteTargets,
+            _ => throw new ArgumentException("Invalid note location for binding"),
+        }
     }
     public static List<NoteLocation> InterpolateSlides(
         NoteLocation start,
