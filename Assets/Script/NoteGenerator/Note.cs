@@ -42,6 +42,7 @@ public class Note : MonoBehaviour
         this.slideList = slideList ?? new List<NoteLocation>();
 
         this.judgementArray = Enumerable.Repeat(false, this.slideList.Count > 0 ? this.slideList.Count : 1).ToList();
+        this.noteScore = 0.0;
     }
     public NoteLocation noteLocation { get; set; }
     public NoteType noteType { get; set; }
@@ -50,6 +51,7 @@ public class Note : MonoBehaviour
     public bool isAdjusted { get; set; }
     public bool isBreakNote { get; set; }
     public List<NoteLocation> slideList { get; set; }
+    public double noteScore { get; set; }
 
     public List<bool> judgementArray { get; set; }
     public GameObject targetObject()

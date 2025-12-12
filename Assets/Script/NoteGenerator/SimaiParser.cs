@@ -13,6 +13,11 @@ public class LevelData
     public string RawNoteString { get; private set; }
     public List<Note> NoteList { get; private set; }
 
+    public uint tapNoteCount { get; private set; } = 0;
+    public uint holdNoteCount { get; private set; } = 0;
+    public uint slideNoteCount { get; private set; } = 0;
+    public uint breakNoteCount { get; private set; } = 0;
+
     public LevelData(
         string levelString = "",
         string rawNoteString = ""
@@ -67,6 +72,66 @@ public class LevelData
                     break;
             }
         }
+        NoteList.ForEach((note) =>
+            {
+                if (note.isBreakNote)
+                {
+                    breakNoteCount++;
+                }
+                else
+                {
+                    switch (note.noteType)
+                    {
+                        case NoteType.TAP:
+                            tapNoteCount++;
+                            break;
+                        case NoteType.HOLD:
+                            holdNoteCount++;
+                            break;
+                        case NoteType.SLIDE:
+                            slideNoteCount++;
+                            break;
+                    }
+                }
+            }
+        );
+
+        uint totalWeight = tapNoteCount + holdNoteCount * 2 + slideNoteCount * 3 + breakNoteCount * 5;
+        double computedAccuracy, computedBreakAccuracy;
+        if (breakNoteCount == 0)
+        {
+            computedAccuracy = (double)101.0f / totalWeight;
+            computedBreakAccuracy = 0.0f;
+        }
+        else
+        {
+            computedAccuracy = (double)100.0f / totalWeight;
+            computedBreakAccuracy = (double)1.0f / breakNoteCount;
+        }
+        NoteList.ForEach((note) =>
+            {
+                if (note.isBreakNote)
+                {
+                    note.noteScore = computedBreakAccuracy + 5 * computedAccuracy;
+                }
+                else
+                {
+                    switch (note.noteType)
+                    {
+                        case NoteType.TAP:
+                            note.noteScore = computedAccuracy;
+                            break;
+                        case NoteType.HOLD:
+                            note.noteScore = computedAccuracy * 2.0f;
+                            break;
+                        case NoteType.SLIDE:
+                            note.noteScore = computedAccuracy * 3.0f;
+                            break;
+                    }
+                }
+            }
+        );
+
     }
     private double GetNotesPerMeasure() // {N}
     {
