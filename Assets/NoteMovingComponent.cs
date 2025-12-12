@@ -41,11 +41,15 @@ public class NoteMovingComponent : MonoBehaviour
         startPosition = transform.position;
         GameObject tarObj = noteinfomation.targetObject();
         targetPosition = tarObj.transform.position;
+
         Vector3 direction = targetPosition - transform.position;
         direction.x = 0;
         direction.y = 0;
+        
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = targetRotation;
+
+        tmpPosition = this.transform.position;
 
         initialized = true;
     }
@@ -70,8 +74,9 @@ public class NoteMovingComponent : MonoBehaviour
                 float currentMoveTime = (float)(currentTime - moveStartTime);
                 float progress = currentMoveTime / totalMoveTime;
 
-                // ���� ����(Lerp)���� ��ġ �̵�
-                transform.position = Vector3.Lerp(startPosition, targetPosition, progress);
+                Vector3 pos = Vector3.Lerp(startPosition, targetPosition, progress);
+                pos.z = tmpPosition.z;
+                transform.position = pos;
             }
             else 
             {
