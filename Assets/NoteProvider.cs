@@ -60,7 +60,7 @@ public class NoteProvider : MonoBehaviour
         note.isAdjusted = false;
         note.isBreakNote = false;
         note.slideList = null;
-        note.judgementArray.Add(TestGameObject);
+        note.judgementArray.Add(true);
 
         noteList.Add(note);
 }
@@ -127,17 +127,17 @@ public class NoteProvider : MonoBehaviour
                     break;
             }
         }
-        Note myNote = noteObject.AddComponent<Note>(
-            // TODO: noteData 정보로 constructor 생성
-        );
+        Note myNote = noteObject.AddComponent<Note>();
+        myNote.noteType = noteData.noteType;
+        myNote.noteLocation = noteData.noteLocation;
+        myNote.tapTime = noteData.tapTime;
+        myNote.endTime = noteData.endTime;
+        myNote.isAdjusted = noteData.isAdjusted;
+        myNote.isBreakNote = noteData.isBreakNote;
+        myNote.slideList = noteData.slideList;
+        myNote.judgementArray = noteData.judgementArray; 
 
-        if (noteData.noteType == NoteType.SLIDE)
-        {
-            foreach (var vertex in noteData.slideList)
-            {
-                // TODO: vertex�� ���� �����̵� object �����
-            }
-        }
+        JudgementManager jm = noteObject.AddComponent<JudgementManager>();
+        jm.Initialize(myNote);
     }
-
 }
