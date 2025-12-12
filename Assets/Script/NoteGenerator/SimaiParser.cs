@@ -1,9 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Notes;
+using System.Linq;
+using static Note;
 
 namespace SimaiParser
 {
