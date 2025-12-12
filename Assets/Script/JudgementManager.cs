@@ -19,7 +19,6 @@ public class JudgementManager : MonoBehaviour
 
     bool initialized = false;
 
-
     public void Initialize(Note noteComponent)
     {
         note = noteComponent;
@@ -33,7 +32,6 @@ public class JudgementManager : MonoBehaviour
     {
         if (!initialized) return;
         clue = targetObject.GetComponent<JudgementClueProvider>(); // update 
-        Debug.Log(clue.lastEnterSelectTime);
 
         // tap note 
         if (note.noteType == NoteType.TAP)
@@ -62,8 +60,6 @@ public class JudgementManager : MonoBehaviour
                         if (!note.judgementArray[0]){
                         note.judgementArray[0] = true;
                         ScoreManager.Instance.AddScore(tap_note_score*score_scale);
-
-                        Debug.Log(tap_note_score*score_scale);
                         }
                     }
                 }

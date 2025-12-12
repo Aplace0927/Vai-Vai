@@ -25,9 +25,11 @@ public class NoteMovingComponent : MonoBehaviour
     SpriteRenderer noteRenderer;
     Vector2 holdNoteVector;
 
-    private void Start()
+    bool initialized = false;
+
+    public void Initialize(Note noteComponent)
     {
-        noteinfomation = noteObject.GetComponent<Note>();
+        noteinfomation = noteComponent;
         noteRenderer = GetComponent<SpriteRenderer>();
 
         hitTime = noteinfomation.tapTime;
@@ -39,16 +41,19 @@ public class NoteMovingComponent : MonoBehaviour
         startPosition = transform.position;
         GameObject tarObj = noteinfomation.targetObject();
         targetPosition = tarObj.transform.position;
-        // ��Ʈ ���� �ٶ󺸱� (z�� ����)
         Vector3 direction = targetPosition - transform.position;
         direction.x = 0;
         direction.y = 0;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = targetRotation;
+
+        initialized = true;
     }
 
     private void Update()
     {
+        if (!initialized) return;
+
         double currentTime = Time.time;
 
         // tap note
@@ -59,7 +64,7 @@ public class NoteMovingComponent : MonoBehaviour
                 // TODO: alpha�� 0���� 255���� ��ȭ
                 ;
             }
-            else if (currentTime < hitTime + 10.0f)
+            else if (currentTime < hitTime + visibleOffsetTime)
             {
                 float totalMoveTime = (float)(hitTime - moveStartTime);
                 float currentMoveTime = (float)(currentTime - moveStartTime);
@@ -68,8 +73,9 @@ public class NoteMovingComponent : MonoBehaviour
                 // ���� ����(Lerp)���� ��ġ �̵�
                 transform.position = Vector3.Lerp(startPosition, targetPosition, progress);
             }
-            else
+            else 
             {
+                Debug.Log("here?");
                 transform.position = targetPosition;
 
                 Destroy(gameObject);
