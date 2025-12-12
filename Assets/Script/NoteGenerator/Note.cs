@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
 using static NoteObjectManager;
@@ -17,8 +18,9 @@ public enum SlideDirection { STRAIGHT, CCW, CW, SHORTEST }
 
 public class Note : MonoBehaviour
 {
-    public Note() {
-        
+    public Note()
+    {
+
     }
 
     public Note(
@@ -38,7 +40,8 @@ public class Note : MonoBehaviour
         this.isAdjusted = isAdjusted;
         this.isBreakNote = isBreakNote;
         this.slideList = slideList ?? new List<NoteLocation>();
-        this.judgementArray = new List<bool>(this.slideList.Count > 0 ? this.slideList.Count : 1);
+
+        this.judgementArray = Enumerable.Repeat(false, this.slideList.Count > 0 ? this.slideList.Count : 1).ToList();
     }
     public NoteLocation noteLocation { get; set; }
     public NoteType noteType { get; set; }
