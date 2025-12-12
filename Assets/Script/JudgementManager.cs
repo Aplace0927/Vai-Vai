@@ -9,25 +9,33 @@ public class JudgementManager : MonoBehaviour
     Note note;
     JudgementClueProvider clue;
     int score_scale;
-    double free_time;
-
+    double free_time; 
+    GameObject targetObject;
+    
     //TODO 이거 score 제대로
     double tap_note_score = 10;
     double hold_note_score = 20;
     double slide_note_score = 30;
 
+    bool initialized = false;
 
-    // Start is called before the first frame update
-    void Start()
+
+    public void Initialize(Note noteComponent)
     {
-        note = GetComponent<Note>();
-        GameObject targetObject = note.targetObject();
-        clue = targetObject.GetComponent<JudgementClueProvider>();
+        note = noteComponent;
+        targetObject = note.targetObject();
+    
+        initialized = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!initialized) return;
+        clue = targetObject.GetComponent<JudgementClueProvider>(); // update 
+        Debug.Log(clue.lastEnterSelectTime);
+
+        // tap note 
         free_time = note.isBreakNote ? 20 : 80;
 
         if (note.noteType == NoteType.TAP)
@@ -40,16 +48,16 @@ public class JudgementManager : MonoBehaviour
                 {
                     if (((note.tapTime - free_time) <= clue.lastExitSelectTime) & ((note.tapTime + free_time) >= clue.lastExitSelectTime))
                     {
-                        if (!note.judgementArray[0])
-                        {
-                            note.judgementArray[0] = true;
-                            ScoreManager.Instance.AddScore(note.noteScore);
+                        if (!note.judgementArray[0]){
+                        note.judgementArray[0] = true;
+                        ScoreManager.Instance.AddScore(note.noteScore);
+
+                        Debug.Log(note.noteScore);
                         }
                     }
                 }
             }
-        }
-
+        } 
         // hold note
         else if (note.noteType == NoteType.HOLD)
         {
@@ -75,9 +83,9 @@ public class JudgementManager : MonoBehaviour
         // slide note
         else if (note.noteType == NoteType.SLIDE)
         {
-            List<GameObject> slide_notes = null; // note.slideList(); // TODO: class 정의 변경되면 List<GameObject> 받아오도록 변경
-            if (TimeManager.Instance.PROGRESS_TIME < (note.tapTime - free_time)) { }
-            else if (TimeManager.Instance.PROGRESS_TIME > (note.endTime + free_time)) { }
+            List<GameObject> slide_notes = note.targetSlideList();
+            if (TimeManager.Instance.PROGRESS_TIME < (note.tapTime - free_time)){}
+            else if (TimeManager.Instance.PROGRESS_TIME > (note.endTime + free_time)){}
             else
             {
                 if (((note.tapTime - free_time) <= clue.lastEnterSelectTime) & ((note.tapTime + free_time) >= clue.lastEnterSelectTime))
