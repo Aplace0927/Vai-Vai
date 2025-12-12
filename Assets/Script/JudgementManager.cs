@@ -19,7 +19,6 @@ public class JudgementManager : MonoBehaviour
 
     bool initialized = false;
 
-
     public void Initialize(Note noteComponent)
     {
         note = noteComponent;
@@ -33,7 +32,6 @@ public class JudgementManager : MonoBehaviour
     {
         if (!initialized) return;
         clue = targetObject.GetComponent<JudgementClueProvider>(); // update 
-        Debug.Log(clue.lastEnterSelectTime);
 
         // tap note 
         free_time = note.isBreakNote ? 20 : 80;

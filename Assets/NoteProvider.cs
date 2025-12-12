@@ -5,6 +5,7 @@ using UnityEngine;
 using static SimaiParser;
 using static MusicData;
 using static Note;
+using static NoteMovingComponent;
 using System.Linq;
 
 // TODO: publuc List<GameObject> targetSlideList 이걸 넘겨주도록 변경
@@ -134,5 +135,8 @@ public class NoteProvider : MonoBehaviour
 
         JudgementManager jm = noteObject.AddComponent<JudgementManager>();
         jm.Initialize(myNote);
+
+        NoteMovingComponent nmc = noteObject.AddComponent<NoteMovingComponent>();
+        nmc.Initialize(myNote);
     }
 }
