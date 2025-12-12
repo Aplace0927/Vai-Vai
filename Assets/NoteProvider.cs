@@ -2,7 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static SimaiParser;
+using static MusicData;
 using static Note;
+using System.Linq;
 
 // TODO: publuc List<GameObject> targetSlideList 이걸 넘겨주도록 변경
 public class NoteProvider : MonoBehaviour
@@ -53,17 +56,9 @@ public class NoteProvider : MonoBehaviour
         noteList.Clear();
 
         Note note = new Note();
-        note.noteType = NoteType.TAP;  
-        note.tapTime = 3.0f;
-        note.endTime = 6.0f;
-        note.judgementArray = new List<bool>();
-        note.isAdjusted = false;
-        note.isBreakNote = false;
-        note.slideList = null;
-        note.judgementArray.Add(TestGameObject);
-
-        noteList.Add(note);
-}
+        SimaiParser parser = new SimaiParser("Assets/Fumen/setsunatrip.txt");
+        noteList.AddRange(parser.MusicData.LevelInfo[(int)MusicData.Difficulty.MASTER].NoteList);
+    }
 
     void Update()
     {
@@ -89,7 +84,7 @@ public class NoteProvider : MonoBehaviour
 
     void SpawnNote(Note noteData)
     {
-        GameObject noteObject ;
+        GameObject noteObject;
         if (noteData.isBreakNote)
         {
             switch (noteData.noteType)
@@ -128,7 +123,7 @@ public class NoteProvider : MonoBehaviour
             }
         }
         Note myNote = noteObject.AddComponent<Note>(
-            // TODO: noteData 정보로 constructor 생성
+        // TODO: noteData 정보로 constructor 생성
         );
 
         if (noteData.noteType == NoteType.SLIDE)
