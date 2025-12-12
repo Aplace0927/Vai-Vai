@@ -16,7 +16,7 @@ public class NoteMovingComponent : MonoBehaviour
     private double appearTime;
     private double moveStartTime;
     private double hitTime;
-    private double endTime;
+    private double? endTime;
 
     Vector3 startPosition;
     Vector3 targetPosition;
@@ -38,7 +38,7 @@ public class NoteMovingComponent : MonoBehaviour
 
         startPosition = transform.position;
         targetPosition = noteinfomation.targetObject.transform.position;
-        // ³ëÆ® ¹æÇâ ¹Ù¶óº¸±â (zÃà Á¦¿Ü)
+        // ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸±ï¿½ (zï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         Vector3 direction = targetPosition - transform.position;
         direction.x = 0;
         direction.y = 0;
@@ -51,11 +51,11 @@ public class NoteMovingComponent : MonoBehaviour
         double currentTime = Time.time;
 
         // tap note
-        if (noteinfomation.type == NoteType.TAP)
+        if (noteinfomation.noteType == NoteType.TAP)
         {
             if (currentTime < moveStartTime)
             {
-                // TODO: alpha°ª 0ºÎÅÍ 255±îÁö º¯È­
+                // TODO: alphaï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ 255ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­
                 ;
             }
             else if (currentTime < hitTime + 10.0f)
@@ -64,7 +64,7 @@ public class NoteMovingComponent : MonoBehaviour
                 float currentMoveTime = (float)(currentTime - moveStartTime);
                 float progress = currentMoveTime / totalMoveTime;
 
-                // ¼±Çü º¸°£(Lerp)À¸·Î À§Ä¡ ÀÌµ¿
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(Lerp)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½Ìµï¿½
                 transform.position = Vector3.Lerp(startPosition, targetPosition, progress);
             }
             else
@@ -74,9 +74,9 @@ public class NoteMovingComponent : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        else if (noteinfomation.type == NoteType.HOLD)
+        else if (noteinfomation.noteType == NoteType.HOLD)
         {
-            // TODO: ³ëÆ® º¸ÀÌ´Â ¹æ½Ä ´Ù½Ã »ý°¢ÇÏ±â
+            // TODO: ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
         }
         else { }
     }

@@ -29,7 +29,7 @@ public class JudgementManager : MonoBehaviour
     void Update()
     {
         // tap note 
-        if (note.type == NoteType.TAP)
+        if (note.noteType == NoteType.TAP)
         {
             //TODO 시간 단위 맞추기
             //TODO score 게산 제대로
@@ -62,7 +62,7 @@ public class JudgementManager : MonoBehaviour
         } 
 
         // hold note
-        else if (note.type == NoteType.HOLD)
+        else if (note.noteType == NoteType.HOLD)
         {
             if (note.isBreakNote)
             {
@@ -92,9 +92,9 @@ public class JudgementManager : MonoBehaviour
         }
 
         // slide note
-        else if (note.type == NoteType.SLIDE)
+        else if (note.noteType == NoteType.SLIDE)
         {
-            List<GameObject> slide_notes = note.slideNotes;
+            List<GameObject> slide_notes = null; // note.slideList(); // TODO: class 정의 변경되면 List<GameObject> 받아오도록 변경
             if (note.isBreakNote)
             {
                 score_scale = 5;
@@ -113,7 +113,7 @@ public class JudgementManager : MonoBehaviour
                 {
                     note.judgementArray[0] = true;
                 }
-                for (int i = 1; i < note.slideNotes.Count - 1; i++)
+                for (int i = 1; i < note.slideList.Count - 1; i++)
                 {
                     if (slide_notes[i].GetComponent<JudgementClueProvider>().isSelected)
                     {
@@ -123,12 +123,12 @@ public class JudgementManager : MonoBehaviour
                         }
                     }
                 }
-                if (((note.endTime - free_time) <= slide_notes[note.slideNotes.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime) &((note.endTime + free_time) >= slide_notes[note.slideNotes.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime))
+                if (((note.endTime - free_time) <= slide_notes[note.slideList.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime) &((note.endTime + free_time) >= slide_notes[note.slideList.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime))
                 {
-                    if (note.judgementArray[note.slideNotes.Count - 2])
+                    if (note.judgementArray[note.slideList.Count - 2])
                     {
-                        if (!note.judgementArray[note.slideNotes.Count - 1]){
-                        note.judgementArray[note.slideNotes.Count - 1] = true;
+                        if (!note.judgementArray[note.slideList.Count - 1]){
+                        note.judgementArray[note.slideList.Count - 1] = true;
                         ScoreManager.Instance.AddScore(slide_note_score*score_scale);
                         }
                     }

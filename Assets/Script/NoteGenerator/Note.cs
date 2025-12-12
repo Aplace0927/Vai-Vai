@@ -16,6 +16,8 @@ public enum SlideDirection { STRAIGHT, CCW, CW, SHORTEST }
 
 public class Note: MonoBehaviour
 {
+    public Note() {}
+
     public Note(
         NoteType noteType,
         NoteLocation noteLocation,
@@ -34,6 +36,7 @@ public class Note: MonoBehaviour
         this.isBreakNote = isBreakNote;
         this.slideList = slideList ?? new List<NoteLocation>();
     }
+
     public NoteLocation noteLocation { get; set; }
     public NoteType noteType { get; set; }
     public double tapTime { get; set; }
@@ -45,6 +48,7 @@ public class Note: MonoBehaviour
     // added TODO: @Aplace
     public List<bool> judgementArray { get; set; }
     public GameObject targetObject { get; set; }
+    // publuc List<GameObject> targetSlideList
 
 
 }

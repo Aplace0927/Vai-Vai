@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Note;
 
-
+// TODO: publuc List<GameObject> targetSlideList 이걸 넘겨주도록 변경
 public class NoteProvider : MonoBehaviour
 {
     public GameObject TestGameObject;
@@ -53,17 +53,17 @@ public class NoteProvider : MonoBehaviour
         noteList.Clear();
 
         Note note = new Note();
-        note.type = NoteType.HOLD;
+        note.noteType = NoteType.HOLD;
         note.targetObject = TestGameObject;
         note.tapTime = 3.0f;
         note.endTime = 6.0f;
         note.judgementArray = new List<bool>();
         note.isAdjusted = false;
         note.isBreakNote = false;
-        note.slideNotes = null;
+        note.slideList = null;
+        note.judgementArray.Add(TestGameObject);
 
         noteList.Add(note);
-        note.judgementArray.Add(TestGameObject);
 }
 
     void Update()
@@ -93,7 +93,7 @@ public class NoteProvider : MonoBehaviour
         GameObject noteObject ;
         if (noteData.isBreakNote)
         {
-            switch (noteData.type)
+            switch (noteData.noteType)
             {
                 case NoteType.TAP:
                     noteObject = Instantiate(tapBreakPrefabs, spawnPoint.position, Quaternion.identity);
@@ -112,7 +112,7 @@ public class NoteProvider : MonoBehaviour
         }
         else
         {
-            switch (noteData.type)
+            switch (noteData.noteType)
             {
                 case NoteType.TAP:
                     noteObject = Instantiate(tapPrefabs, spawnPoint.position, Quaternion.identity);
@@ -128,14 +128,13 @@ public class NoteProvider : MonoBehaviour
                     break;
             }
         }
-        Note myNote = noteObject.AddComponent<Note>();
-        myNote.initVariables(NoteType.TAP, noteData.targetObject, noteData.tapTime, noteData.endTime, noteData.judgementArray,
-            noteData.isAdjusted, noteData.isBreakNote, noteData.slideNotes);
+        Note myNote = noteObject.AddComponent<Note>(
+            // TODO: noteData 정보로 constructor 생성
+        );
 
-
-        if (noteData.type == NoteType.SLIDE)
+        if (noteData.noteType == NoteType.SLIDE)
         {
-            foreach (var vertex in noteData.slideNotes)
+            foreach (var vertex in noteData.slideList)
             {
                 // TODO: vertex�� ���� �����̵� object �����
             }
