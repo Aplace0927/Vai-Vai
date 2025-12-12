@@ -37,7 +37,8 @@ public class NoteMovingComponent : MonoBehaviour
         
 
         startPosition = transform.position;
-        targetPosition = noteinfomation.targetObject.transform.position;
+        GameObject tarObj = noteinfomation.targetObject();
+        targetPosition = tarObj.transform.position;
         // ��Ʈ ���� �ٶ󺸱� (z�� ����)
         Vector3 direction = targetPosition - transform.position;
         direction.x = 0;

@@ -21,7 +21,7 @@ public class JudgementManager : MonoBehaviour
     void Start()
     {
         note = GetComponent<Note>();
-        GameObject targetObject = note.targetObject;
+        GameObject targetObject = note.targetObject();
         clue = targetObject.GetComponent<JudgementClueProvider>();
     }
 

@@ -53,8 +53,7 @@ public class NoteProvider : MonoBehaviour
         noteList.Clear();
 
         Note note = new Note();
-        note.noteType = NoteType.HOLD;
-        note.targetObject = TestGameObject;
+        note.noteType = NoteType.TAP;  
         note.tapTime = 3.0f;
         note.endTime = 6.0f;
         note.judgementArray = new List<bool>();
