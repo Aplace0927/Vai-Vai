@@ -324,7 +324,7 @@ public class LevelData
                                 null,
                                 isAdjusted,
                                 isBreakNote,
-                                new List<NoteLocation>()
+                                new List<List<NoteLocation>>()
                             );
                             noteList.Add(tapNote);
                         }, __ParseState.FINI) ||
@@ -355,7 +355,7 @@ public class LevelData
                                 currentTimeStamp + unitMeasure * double.Parse(token.Split('/')[0]) / double.Parse(token.Split('/')[1]),
                                 isAdjusted,
                                 isBreakNote,
-                                new List<NoteLocation>()
+                                new List<List<NoteLocation>>()
                             );
                             noteList.Add(holdNote);
                         }, __ParseState.FINI) ||
@@ -368,7 +368,7 @@ public class LevelData
                     _ = TryParse(ConsumeLocation, (token) =>
                     {
                         // Considering slide destination, check every outer ring note
-                        slideTuples.AddRange(NotesCollection.InterpolateSlides(
+                        slideTuples.AddRange(NotesCollection.InterpolateSlidesIndex(
                             slideTuples.Last(),
                             NotesCollection.OuterRingNotes(token),
                             slideDirection
@@ -403,7 +403,7 @@ public class LevelData
                                 currentTimeStamp + unitMeasure * slideDurations.Sum(),
                                 isAdjusted,
                                 isBreakNote,
-                                new List<NoteLocation>(slideTuples)
+                                NotesCollection.InterpolateSlides(slideTuples)
                             ));
                             slideTuples.Clear();
                             slideTuples.Add(noteLocation);
@@ -417,7 +417,7 @@ public class LevelData
                                 currentTimeStamp + unitMeasure * slideDurations.Sum(),
                                 isAdjusted,
                                 isBreakNote,
-                                new List<NoteLocation>(slideTuples)
+                                NotesCollection.InterpolateSlides(slideTuples)
                             ));
                         }, __ParseState.FINI) ||
                         TryParse(ConsumeSlideType, (token) =>

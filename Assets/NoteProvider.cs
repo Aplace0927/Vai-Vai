@@ -58,7 +58,7 @@ public class NoteProvider : MonoBehaviour
 
         Note note = new Note();
         SimaiParser parser = new SimaiParser("Assets/Fumen/setsunatrip.txt");
-        noteList.AddRange(parser.MusicData.LevelInfo[(int)MusicData.Difficulty.MASTER].NoteList);
+        noteList.AddRange(parser.MusicData.LevelInfo[(int)MusicData.Difficulty.ReMASTER].NoteList);
     }
 
     void Update()
@@ -131,7 +131,7 @@ public class NoteProvider : MonoBehaviour
         myNote.isAdjusted = noteData.isAdjusted;
         myNote.isBreakNote = noteData.isBreakNote;
         myNote.slideList = noteData.slideList;
-        myNote.judgementArray = noteData.judgementArray; 
+        myNote.judgementArray = noteData.judgementArray;
 
         JudgementManager jm = noteObject.AddComponent<JudgementManager>();
         jm.Initialize(myNote);

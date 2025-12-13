@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using static Note;
@@ -9,9 +10,9 @@ public class JudgementManager : MonoBehaviour
     Note note;
     JudgementClueProvider clue;
     int score_scale;
-    double free_time; 
+    double free_time;
     GameObject targetObject;
-    
+
     //TODO 이거 score 제대로
     double tap_note_score = 10;
     double hold_note_score = 20;
@@ -23,7 +24,7 @@ public class JudgementManager : MonoBehaviour
     {
         note = noteComponent;
         targetObject = note.targetObject();
-    
+
         initialized = true;
     }
 
@@ -46,16 +47,17 @@ public class JudgementManager : MonoBehaviour
                 {
                     if (((note.tapTime - free_time) <= clue.lastExitSelectTime) & ((note.tapTime + free_time) >= clue.lastExitSelectTime))
                     {
-                        if (!note.judgementArray[0]){
-                        note.judgementArray[0] = true;
-                        ScoreManager.Instance.AddScore(note.noteScore);
+                        if (!note.judgementArray[0])
+                        {
+                            note.judgementArray[0] = true;
+                            ScoreManager.Instance.AddScore(note.noteScore);
 
-                        Debug.Log(note.noteScore);
+                            Debug.Log(note.noteScore);
                         }
                     }
                 }
             }
-        } 
+        }
         // hold note
         else if (note.noteType == NoteType.HOLD)
         {
@@ -81,9 +83,9 @@ public class JudgementManager : MonoBehaviour
         // slide note
         else if (note.noteType == NoteType.SLIDE)
         {
-            List<GameObject> slide_notes = note.targetSlideList();
-            if (TimeManager.Instance.PROGRESS_TIME < (note.tapTime - free_time)){}
-            else if (TimeManager.Instance.PROGRESS_TIME > (note.endTime + free_time)){}
+            List<List<GameObject>> slide_notes = note.targetSlideList();
+            if (TimeManager.Instance.PROGRESS_TIME < (note.tapTime - free_time)) { }
+            else if (TimeManager.Instance.PROGRESS_TIME > (note.endTime + free_time)) { }
             else
             {
                 if (((note.tapTime - free_time) <= clue.lastEnterSelectTime) & ((note.tapTime + free_time) >= clue.lastEnterSelectTime))
@@ -92,7 +94,11 @@ public class JudgementManager : MonoBehaviour
                 }
                 for (int i = 1; i < note.slideList.Count - 1; i++)
                 {
-                    if (slide_notes[i].GetComponent<JudgementClueProvider>().isSelected)
+                    if (
+                        slide_notes[i].ConvertAll(
+                            (obj) => obj.GetComponent<JudgementClueProvider>().isSelected
+                        ).Any(b => b == true)
+                    )
                     {
                         if (note.judgementArray[i - 1])
                         {
@@ -100,7 +106,17 @@ public class JudgementManager : MonoBehaviour
                         }
                     }
                 }
-                if (((note.endTime - free_time) <= slide_notes[note.slideList.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime) & ((note.endTime + free_time) >= slide_notes[note.slideList.Count - 1].GetComponent<JudgementClueProvider>().lastEnterSelectTime))
+                if (
+                    slide_notes.Last().ConvertAll(
+                        (obj) =>
+                        {
+                            return (
+                                ((note.endTime - free_time) <= obj.GetComponent<JudgementClueProvider>().lastEnterSelectTime) &&
+                                ((note.endTime + free_time) >= obj.GetComponent<JudgementClueProvider>().lastEnterSelectTime)
+                            );
+                        }
+                    ).Any(b => b == true)
+                )
                 {
                     if (note.judgementArray[note.slideList.Count - 2])
                     {
